@@ -1,6 +1,13 @@
 (function(){
   const origin = window.location.origin;
-  const API_BASE = (location.protocol === 'file:' || origin === 'null' || !origin) ? 'http://127.0.0.1:8000' : origin;
+  const isLocal = location.protocol === 'file:' ||
+    origin === 'null' ||
+    !origin ||
+    location.hostname === 'localhost' ||
+    location.hostname === '127.0.0.1';
+  const API_BASE = isLocal
+    ? 'http://127.0.0.1:8000'
+    : (location.hostname.endsWith('github.io') ? 'https://cp3405-tr3-2025-p1t5.onrender.com' : origin);
 
   function getToken(){
     return localStorage.getItem('demo_token');
