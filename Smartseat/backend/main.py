@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.database import engine, Base
 from backend import models
-from backend.routers import auth, users, seats, reservations, moderation, forecast, demo
+from backend.routers import auth, users, seats, reservations, moderation
 import logging
 
 app = FastAPI(title="Take-A-Seat Backend", version="0.1.0")
@@ -28,8 +28,6 @@ app.include_router(users.router)
 app.include_router(seats.router)
 app.include_router(reservations.router)
 app.include_router(moderation.router)
-app.include_router(forecast.router)
-app.include_router(demo.router)
 
 @app.get("/")
 def root():
