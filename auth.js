@@ -45,7 +45,7 @@
   function formatDate(dt){
     try{
       const d = (typeof dt === 'string') ? new Date(dt) : dt;
-      return d.toLocaleString(window.I18n ? I18n.language : 'zh-CN');
+      return d.toLocaleString(window.I18n ? I18n.language : 'en');
     } catch(_){ return String(dt); }
   }
 

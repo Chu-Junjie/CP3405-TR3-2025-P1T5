@@ -328,8 +328,8 @@ Network error. Please try again.|网络错误，请稍后重试`;
     const divider = line.indexOf('|');
     return [line.slice(0, divider), line.slice(divider + 1)];
   }));
-  let language = 'zh-CN';
-  try { if (localStorage.getItem('smartseat-language') === 'en') language = 'en'; } catch (_) {}
+  let language = 'en';
+  try { if (localStorage.getItem('smartseat-language') === 'zh-CN') language = 'zh-CN'; } catch (_) {}
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   function t(value) {
     if (language === 'en' || typeof value !== 'string') return value;
@@ -397,7 +397,7 @@ Network error. Please try again.|网络错误，请稍后重试`;
     }
   }
   function setLanguage(value) {
-    language = value === 'en' ? 'en' : 'zh-CN';
+    language = value === 'zh-CN' ? 'zh-CN' : 'en';
     try { localStorage.setItem('smartseat-language', language); } catch (_) {}
     document.documentElement.lang = language;
     translate(document.documentElement);

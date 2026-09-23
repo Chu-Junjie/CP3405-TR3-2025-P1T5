@@ -40,7 +40,7 @@ const server = http.createServer((req, res) => {
    for (const file of files) {
     await page.goto(base+file,{waitUntil:'networkidle'});
     await page.waitForTimeout(80);
-    assert.equal(await page.getAttribute('html','lang'),'zh-CN',file);
+    assert.equal(await page.getAttribute('html','lang'),'en',file);
     assert.equal(await page.locator('.language-toolbar').count(),1,file);
     const overflow=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth,offenders:[...document.querySelectorAll('body *')].filter(e=>{const r=e.getBoundingClientRect();return r.right>innerWidth+1&&r.width>0&&!e.closest('.seat-map-viewport,.sidebar,.overflow-x-auto');}).slice(0,8).map(e=>e.className)}));
     if(overflow.scroll>width+1) issues.push({file,width,...overflow});
@@ -56,6 +56,8 @@ const server = http.createServer((req, res) => {
   assert.equal(await page.title(),'Smart Seat Login');
   await page.reload(); assert.equal(await page.getAttribute('html','lang'),'en');
   await page.locator('[data-language="zh-CN"]').click();
+  await page.reload();
+  assert.equal(await page.getAttribute('html','lang'),'zh-CN', 'Saved Chinese preference survives reload');
   await page.goto(base+'B06_room_selection.html');
   await page.locator('[data-block="C"]').click();
   await page.locator('[data-room="4"]').click();
@@ -113,6 +115,8 @@ const server = http.createServer((req, res) => {
   await blocked.addInitScript(()=>{Storage.prototype.getItem=()=>{throw new Error('Storage disabled');};Storage.prototype.setItem=()=>{throw new Error('Storage disabled');};});
   const blockedPage=await blocked.newPage();
   await blockedPage.goto(base+'A01_signin_credentials.html');
+  assert.equal(await blockedPage.getAttribute('html','lang'),'en');
+  await blockedPage.locator('[data-language="zh-CN"]').click();
   assert.equal(await blockedPage.getAttribute('html','lang'),'zh-CN');
   await blockedPage.locator('[data-language="en"]').click();
   assert.equal(await blockedPage.getAttribute('html','lang'),'en');

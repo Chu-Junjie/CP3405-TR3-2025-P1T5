@@ -4,7 +4,7 @@ Static frontend with the FastAPI backend in `Smartseat/backend`.
 
 ## Language and mobile layout
 
-The interface defaults to Simplified Chinese. The top language bar switches between
+The interface defaults to English. The top language bar switches between
 简体中文 and English without resetting entered form values or selected seats.
 The choice is saved as `smartseat-language` in local storage; when storage is
 unavailable the switch still works for the current page.
