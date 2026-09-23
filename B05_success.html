@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <script src="i18n.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Successfully Completed</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,9 +24,10 @@
             }
         }
     </script>
+    <link rel="stylesheet" href="responsive.css">
 </head>
-<body class="bg-white min-h-screen flex flex-col items-center justify-center p-4">
-    <div style="position:absolute;top:1rem;left:1rem;display:flex;gap:0.5rem;">
+<body class="success-page bg-white min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="success-navigation" style="position:absolute;top:1rem;left:1rem;display:flex;gap:0.5rem;">
         <button class="back-btn" onclick="window.location.href='B02_home.html'">
             <i class="fa fa-arrow-left"></i> Back to Home
         </button>
@@ -123,28 +125,29 @@
             seatEl.textContent = r.seat_code || '-';
             typeEl.textContent = r.seat_type || '-';
             createdEl.textContent = Auth.formatDate(r.created_at);
+            window.addEventListener('languagechange', () => { createdEl.textContent = Auth.formatDate(r.created_at); });
             setStatusPill(r.status || 'active');
             card.style.display = 'block';
 
             cancelBtn.disabled = (r.status === 'cancelled');
             cancelBtn.addEventListener('click', async () => {
-                if(!confirm('Cancel this reservation?')) return;
+                if(!I18n.confirm('Cancel this reservation?')) return;
                 cancelBtn.disabled = true;
                 cancelBtn.textContent = 'Cancelling...';
                 try {
                     const res = await Auth.apiFetch('/api/reservations/' + r.id, { method: 'DELETE' });
                     if(!res.ok){
                         const data = await res.json().catch(()=>({}));
-                        alert('Cancel failed: ' + (data.detail || res.statusText));
+                        I18n.alert('Cancel failed: ' + (data.detail || res.statusText));
                         cancelBtn.disabled = false; cancelBtn.textContent = 'Cancel Reservation';
                         return;
                     }
                     setStatusPill('cancelled');
                     localStorage.setItem('last_reservation', JSON.stringify({ ...r, status: 'cancelled' }));
-                    alert('Reservation cancelled');
+                    I18n.alert('Reservation cancelled');
                 } catch(err){
                     console.error(err);
-                    alert('Network error while cancelling');
+                    I18n.alert('Network error while cancelling');
                     cancelBtn.disabled = false; cancelBtn.textContent = 'Cancel Reservation';
                 }
             }, { once: true });

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <script src="i18n.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartSeat - Anomaly Detection</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -208,16 +209,17 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="responsive.css">
 </head>
-<body class="bg-gray-50">
-    <div class="flex h-screen overflow-hidden">
+<body class="dashboard-page bg-gray-50">
+    <div class="dashboard-layout flex h-screen overflow-hidden">
         <div class="sidebar w-64 bg-white border-r border-gray-200 flex flex-col z-40">
             <div class="p-5 border-b border-gray-200 flex items-center justify-between">
                 <h1 class="text-xl font-bold text-primary flex items-center gap-2">
                     <i class="fa fa-graduation-cap"></i>
                     <span>SmartSeat Lecturer & Admin</span>
                 </h1>
-                <button class="lg:hidden text-gray-500" id="closeSidebar">
+                <button class="lg:hidden text-gray-500" id="closeSidebar" aria-label="Close navigation">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
@@ -252,7 +254,7 @@
         <main class="flex-1 flex flex-col overflow-hidden">
             <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 sticky top-0 z-20">
                 <div class="flex items-center gap-4">
-                    <button class="lg:hidden text-gray-600" id="openSidebar">
+                    <button class="lg:hidden text-gray-600" id="openSidebar" aria-label="Open navigation" aria-expanded="false">
                         <i class="fa fa-bars text-xl"></i>
                     </button>
                     <h2 class="text-lg font-semibold text-gray-800">Anomaly Detection Center</h2>
@@ -553,22 +555,25 @@
     <script>
         document.getElementById('openSidebar').addEventListener('click', () => {
             document.querySelector('.sidebar').classList.add('open');
+            document.getElementById('openSidebar').setAttribute('aria-expanded', 'true');
             document.getElementById('overlay').classList.add('open');
         });
         
         document.getElementById('closeSidebar').addEventListener('click', () => {
             document.querySelector('.sidebar').classList.remove('open');
+            document.getElementById('openSidebar').setAttribute('aria-expanded', 'false');
             document.getElementById('overlay').classList.remove('open');
         });
         
         document.getElementById('overlay').addEventListener('click', () => {
             document.querySelector('.sidebar').classList.remove('open');
+            document.getElementById('openSidebar').setAttribute('aria-expanded', 'false');
             document.getElementById('overlay').classList.remove('open');
         });
 
         function updateTime() {
             const now = new Date();
-            document.getElementById('currentTime').textContent = now.toLocaleString('en-US', {
+            document.getElementById('currentTime').textContent = now.toLocaleString(I18n.language, {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
@@ -577,6 +582,7 @@
                 day: 'numeric'
             });
         }
+        window.addEventListener('languagechange', updateTime);
         updateTime();
         setInterval(updateTime, 1000);
 
@@ -586,12 +592,12 @@
                 const title = card.querySelector('h4').textContent;
                 const severity = card.querySelector('.severity-badge').textContent;
                 
-                const originalText = this.textContent;
+                const originalText = 'Investigate';
                 this.innerHTML = '<i class="fa fa-spinner fa-spin mr-1"></i> Investigating';
                 this.disabled = true;
                 
                 setTimeout(() => {
-                    alert(`Investigating: ${title}\nSeverity: ${severity}\n\nDetailed investigation report has been generated.`);
+                    I18n.alert(`Investigating: ${title}\nSeverity: ${severity}\n\nDetailed investigation report has been generated.`);
                     this.innerHTML = originalText;
                     this.disabled = false;
                 }, 1500);
@@ -601,7 +607,7 @@
         document.getElementById('exportBtn').addEventListener('click', function() {
             this.innerHTML = '<i class="fa fa-spinner fa-spin mr-1"></i> Exporting';
             setTimeout(() => {
-                alert('Anomaly trends data exported successfully!');
+                I18n.alert('Anomaly trends data exported successfully!');
                 this.innerHTML = '<i class="fas fa-download mr-1"></i> Export';
             }, 1000);
         });
@@ -612,13 +618,14 @@
                 const now = new Date();
                 document.getElementById('lastUpdated').textContent = `Today ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
                 this.innerHTML = '<i class="fas fa-sync-alt mr-1"></i> Refresh';
-                alert('Anomaly trends data refreshed!');
+                I18n.alert('Anomaly trends data refreshed!');
             }, 1000);
         });
 
         window.addEventListener('resize', () => {
             if (window.innerWidth >= 1024) {
                 document.querySelector('.sidebar').classList.remove('open');
+            document.getElementById('openSidebar').setAttribute('aria-expanded', 'false');
                 document.getElementById('overlay').classList.remove('open');
             }
         });

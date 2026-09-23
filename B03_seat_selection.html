@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <script src="i18n.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartSeat - Seat Selection</title>
     <link rel="stylesheet" href="styles.css">
@@ -320,6 +321,7 @@
             line-height: 1.4;
         }
     </style>
+    <link rel="stylesheet" href="responsive.css">
 </head>
 <body>
     <div class="back-button" style="display:flex;justify-content:space-between;gap:1rem;align-items:center;">
@@ -348,7 +350,7 @@
                     </div>
                     <div class="detail-item">
                         <i class="fa fa-users"></i>
-                        <span>136 seats available</span>
+                        <span id="available-seat-count">136 seats available</span>
                     </div>
                 </div>
             </div>
@@ -365,7 +367,10 @@
 
             <div class="seat-map-section">
                 <!-- 上方区域：两个Exit和Screen -->
-                <div class="top-area">
+                <p class="seat-map-hint">Swipe horizontally to explore the seat map.</p>
+                <div class="seat-map-viewport" tabindex="0" role="region" aria-label="Select Seat">
+                    <div class="seat-map-canvas">
+                        <div class="top-area">
                     <div class="exit-left">Exit</div>
                     <div class="screen-area">Screen</div>
                     <div class="exit-right">Exit</div>
@@ -391,6 +396,8 @@
                     </div>
                 </div>
 
+                    </div>
+                </div>
                 <div class="seat-legend">
                     <div class="legend-item">
                         <div class="legend-color available"></div>
@@ -519,12 +526,15 @@
         function clearGrids(){ leftGrid.innerHTML=''; rightGrid.innerHTML=''; backGrid.innerHTML=''; }
 
         function createSeatElement(seat){
-            const div = document.createElement('div');
+            const div = document.createElement('button');
+            div.type = 'button';
             div.className = 'seat ' + (seat.status === 'available' ? 'available' : 'booked');
             div.textContent = seat.seat_code;
             div.dataset.code = seat.seat_code;
             div.dataset.type = seat.seat_type;
             div.dataset.status = seat.status;
+            div.disabled = seat.status !== 'available';
+            div.setAttribute('aria-label', 'Seat ' + seat.seat_code);
             div.title = seat.seat_code + ' (' + seat.seat_type + ', ' + seat.status + ')';
             if(seat.seat_type === 'accessible'){
                 div.classList.add('accessible');
@@ -621,21 +631,21 @@
             const totalSeats = sorted.length;
             const availableSeats = sorted.filter(s => s.status === 'available').length;
             const bookedSeats = totalSeats - availableSeats;
-            document.querySelector('.lecture-details span:nth-child(8)').textContent = `${availableSeats} seats available`;
+            document.getElementById('available-seat-count').textContent = `${availableSeats} seats available`;
         }
 
         async function createReservation(){
             try { Auth.requireAuth(); } catch(_) { return; }
             const code = selectedSeatCode;
-            if(!code){ alert('请选择一个可用座位'); return; }
+            if(!code){ I18n.alert('Please select an available seat'); return; }
             confirmSeatBtn.disabled = true;
-            const originalText = confirmSeatBtn.textContent;
-            confirmSeatBtn.textContent = '处理中…';
+            const originalText = 'Confirm Seat Reservation';
+            confirmSeatBtn.textContent = 'Processing…';
             try {
                 const res = await Auth.apiFetch('/api/reservations', { method:'POST', body: JSON.stringify({ seat_code: code }) });
                 const data = await res.json().catch(()=>({}));
                 if(!res.ok){
-                    alert('预约失败: ' + (data.detail || res.statusText));
+                    I18n.alert('Reservation failed: ' + (data.detail || res.statusText));
                     confirmSeatBtn.disabled = false;
                     confirmSeatBtn.textContent = originalText;
                     await loadSeats();
@@ -645,7 +655,7 @@
                 window.location.href = 'B05_success.html';
             } catch(err){
                 console.error(err);
-                alert('网络错误，请稍后重试');
+                I18n.alert('Network error. Please try again.');
                 confirmSeatBtn.disabled = false;
                 confirmSeatBtn.textContent = originalText;
             }

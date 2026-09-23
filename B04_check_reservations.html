@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <script src="i18n.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Reservations - SmartSeat</title>
     <link rel="stylesheet" href="styles.css">
@@ -416,6 +417,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="responsive.css">
 </head>
 <body>
     <div class="back-button" style="display:flex;justify-content:space-between;gap:1rem;align-items:center;">
@@ -618,13 +620,17 @@
                     filtered = filtered.filter(res => 
                         (res.seat_code || '').toLowerCase().includes(searchTerm) ||
                         (res.seat_type || '').toLowerCase().includes(searchTerm) ||
-                        (res.status || '').toLowerCase().includes(searchTerm)
+                        (res.status || '').toLowerCase().includes(searchTerm) ||
+                        I18n.t(res.seat_type || '').includes(searchTerm) ||
+                        I18n.t(res.status || '').includes(searchTerm)
                     );
                 }
                 
                 filteredReservations = filtered;
                 renderReservations();
             }
+
+            window.addEventListener('languagechange', applyFilters);
 
             function renderReservations() {
                 if (filteredReservations.length === 0) {
@@ -688,7 +694,7 @@
                     btn.addEventListener('click', async (e) => {
                         const id = e.currentTarget.getAttribute('data-id');
                         if(!id) return;
-                        if(!confirm('Cancel this reservation?')) return;
+                        if(!I18n.confirm('Cancel this reservation?')) return;
                         e.currentTarget.disabled = true;
                         e.currentTarget.textContent = 'Cancelling...';
                         try {

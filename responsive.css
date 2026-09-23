@@ -1,0 +1,118 @@
+/* Loaded after page-specific styles so small screens consistently override desktop layouts. */
+:root { --language-bar-height: 56px; }
+body { padding-top: var(--language-bar-height); }
+.language-toolbar {
+  position: fixed; inset: 0 0 auto; height: var(--language-bar-height); z-index: 1100;
+  display: flex; align-items: center; justify-content: flex-end; gap: .5rem;
+  padding: .375rem max(1rem, env(safe-area-inset-right)); background: #fff;
+  border-bottom: 1px solid #e5e7eb; color: #374151;
+}
+.language-toolbar button { min-height: 44px; padding: .4rem .8rem; border: 1px solid #d1d5db; border-radius: .5rem; background: white; cursor: pointer; font-size: .875rem; }
+.language-toolbar button[aria-pressed="true"] { background: #005ea7; border-color: #005ea7; color: white; }
+button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 3px solid #005ea7; outline-offset: 3px; }
+.jcu-logo { top: calc(var(--language-bar-height) + .5rem); }
+.home-page .back-arrow, .home-page .user-icon { top: calc(var(--language-bar-height) + 1rem); }
+.success-page { padding-top: calc(var(--language-bar-height) + 6rem); }
+.success-page > .success-navigation { top: calc(var(--language-bar-height) + 1rem); }
+.dashboard-page > .dashboard-layout { height: calc(100dvh - var(--language-bar-height)); }
+.dashboard-page main, .home_right-section, .step-content, .profile-info { min-width: 0; }
+.profile-page .right-section > .center-content { position: static; transform: none; width: 100%; }
+.profile-page .profile-card { max-width: 640px; }
+.profile-page .profile-stats { flex-wrap: wrap; }
+.profile-page .stat-number { overflow-wrap: anywhere; }
+.seat-map-viewport { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; padding: .5rem; }
+.seat-map-canvas { min-width: 760px; }
+.seat-map-canvas .seat-row { flex-wrap: nowrap; }
+.seat-map-canvas .seat { flex-shrink: 0; }
+.seat-map-hint { font-size: .875rem; color: #4b5563; margin-bottom: .5rem; }
+@media (min-width: 1024px) { .seat-map-hint { display: none; } }
+@media (max-width: 1023px) {
+  .dashboard-page .sidebar { position: fixed; top: var(--language-bar-height); bottom: 0; left: 0; width: min(18rem, 85vw); transform: translateX(-100%); visibility: hidden; }
+  .dashboard-page .sidebar.open { transform: translateX(0); visibility: visible; }
+  .dashboard-page .overlay { top: var(--language-bar-height); }
+  .dashboard-page main > header { height: auto; min-height: 64px; padding: .75rem 1rem; flex-wrap: wrap; gap: .5rem; }
+  .dashboard-page main > header > div { min-width: 0; gap: .75rem; }
+  .dashboard-page main > header h2 { font-size: 1rem; }
+  .dashboard-page main > header button { min-width: 44px; min-height: 44px; }
+  .dashboard-page main > .overflow-y-auto { padding: 1rem; }
+  .dashboard-page .heatmap-legend { flex-wrap: wrap; }
+  .home_container { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .home_left-buttons { position: static; flex-direction: row; }
+  .home_left-buttons > * { flex: 1; min-width: 0; }
+}
+@media (max-width: 600px) {
+  body { overflow-x: auto; }
+  .container, .profile-container { width: 100%; min-height: auto; overflow: visible; }
+  .left-section, .profile-left { display: none; }
+  .right-section, .profile-right { width: 100%; max-width: none; min-width: 0; min-height: auto; padding: 2rem 1rem; margin: 0; }
+  .auth-page .right-section { padding-top: 5.5rem; }
+  .login-title { margin-top: 0; font-size: 1.6rem; }
+  .role-cards { flex-direction: row; gap: .75rem; }
+  .role-card { min-width: 0; padding: 1rem .5rem; }
+  .role-desc { font-size: .8rem; }
+  .account-card { flex-wrap: wrap; gap: .75rem; }
+  .account-avatar { margin: 0; flex-shrink: 0; }
+  .jcu-logo { right: 1rem; max-height: 50px; margin: .5rem 0; }
+  input:not([type="checkbox"]), select, textarea { max-width: 100%; min-height: 44px; font-size: 16px !important; }
+  button, .room-btn, .sidebar-item { min-height: 44px; }
+  .toggle-password { min-width: 44px; }
+  .home_container { margin: 90px auto 1.5rem; padding: 0 1rem; }
+  .home_left-buttons { flex-direction: column; gap: .75rem; }
+  .home_left-buttons .reserve-btn { padding: 1rem; }
+  .home-page .back-arrow { left: 1rem; }
+  .home-page .user-icon { right: 1rem; }
+  .guide-container { padding: 1rem; }
+  .guide-steps { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .step-image { height: auto; max-height: 220px; object-fit: contain; }
+  .scan-section { padding: 1rem; }
+  .scan-btn { padding: .75rem 1rem; font-size: 1rem; }
+  .location-content { width: 100%; padding: 1rem; }
+  .header-alignment { padding: 0; gap: .75rem; align-items: flex-start; margin-bottom: 1rem; }
+  .location-question { font-size: 1.5rem; }
+  .campus-selection { margin: 0 0 1.5rem; padding: 0; }
+  .campus-options { gap: .5rem; }
+  .campus-btn { flex: 1; padding: .75rem .5rem; }
+  .map-outer-container { margin-top: 0; }
+  .map-container { position: relative; }
+  .map-image { width: 100%; }
+  .location-name { font-size: 1.25rem; }
+  .location-address { overflow-wrap: anywhere; }
+  .app-container { padding: 0 1rem; width: 100%; }
+  body > .back-button { padding: .75rem 1rem; }
+  body > .back-button .back-btn { width: auto; margin: 0; padding: .5rem .75rem; }
+  .page-title { font-size: 1.6rem; }
+  .seat-map-section, .seat-map-container, .selected-seat-info { padding: 1rem; }
+  .seat-legend { gap: .75rem; justify-content: flex-start; }
+  .seat-map-canvas .seat { width: 44px; min-width: 44px; height: 44px; }
+  .info-details, .stats-grid, .reservation-details { grid-template-columns: minmax(0, 1fr); }
+  .filter-section, .filter-options, .reservations-header, .reservation-header, .reservation-footer, .reservation-actions { flex-wrap: wrap; gap: .75rem; }
+  .search-box { min-width: 0; width: 100%; }
+  .filter-options, .filter-select { width: 100%; }
+  .reservations-header, .reservation-card { padding: 1rem; }
+  .new-reservation-btn { width: 100%; justify-content: center; }
+  .info-value { overflow-wrap: anywhere; }
+  .success-page #reservation-card { padding: 1rem; }
+  .success-page #reservation-card > div { flex-wrap: wrap; gap: .75rem; }
+  .success-navigation .back-btn { width: auto; margin: 0; }
+  .main-footer { margin-top: 1rem; }
+  .footer-content { padding: 1rem; }
+  .profile-header { flex-direction: column; }
+  .profile-pic { width: 6rem; height: 6rem; }
+}
+@media (max-width: 600px) {
+  .reservations-container { padding: 1rem; }
+  .detail-grid { grid-template-columns: minmax(0, 1fr); }
+  .modal-overlay { top: var(--language-bar-height); }
+  .modal-content { width: 100%; max-width: 100%; max-height: calc(100dvh - var(--language-bar-height) - 2rem); padding: 1rem; }
+  .modal-header { padding-right: 2.5rem; }
+  .modal-close { width: 44px; height: 44px; top: .5rem; right: .5rem; }
+}
+/* Use native CJK sans-serif fonts while retaining icon fonts from Font Awesome. */
+html, body, button, input, select, textarea, h1, h2, h3, h4, p, span, a, label, div, th, td {
+  font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', sans-serif;
+}
+.secondary-btn { padding: .6rem .85rem; border: 1px solid #d1d5db; border-radius: .5rem; background: white; color: #374151; cursor: pointer; }
+@media (max-width: 600px) {
+  .seat-map-canvas .seat-row { width: max-content; min-width: 100%; }
+  .seat-map-canvas .left-seat-section, .seat-map-canvas .right-seat-section { min-width: max-content; }
+}

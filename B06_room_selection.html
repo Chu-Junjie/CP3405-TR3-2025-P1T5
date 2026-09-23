@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <script src="i18n.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartSeat - Select Avenue</title>
     <link rel="stylesheet" href="styles.css">
@@ -77,6 +78,7 @@
         }
     </style>
     <script src="auth.js"></script>
+    <link rel="stylesheet" href="responsive.css">
 </head>
 <body>
     <div class="back-button">
@@ -288,7 +290,7 @@
                 localStorage.setItem('selectedRoomInfo', JSON.stringify(roomInfo));
                 window.location.href = 'B03_seat_selection.html';
             } else {
-                alert('Please select block, floor and room before confirming.');
+                I18n.alert('Please select block, floor and room before confirming.');
             }
         });
     </script>

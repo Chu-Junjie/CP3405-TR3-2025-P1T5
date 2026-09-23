@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <script src="i18n.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Location - James Cook University</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -163,6 +164,7 @@
         }
     </style>
     <script src="auth.js"></script>
+    <link rel="stylesheet" href="responsive.css">
 </head>
 <body>
     <div class="container">
@@ -368,7 +370,7 @@
         // 确认按钮：确保已选择 campus
         document.querySelector('.confirm-btn').addEventListener('click', (e)=>{
             e.preventDefault();
-            if(!currentCampus){ alert('Please select a campus first'); return; }
+            if(!currentCampus){ I18n.alert('Please select a campus first'); return; }
             localStorage.setItem('selectedCampus', currentCampus);
             window.location.href='B06_room_selection.html';
         });
